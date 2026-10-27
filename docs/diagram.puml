@@ -1,0 +1,89 @@
+@startuml
+skinparam linetype ortho
+
+' =====================================================
+' БАЗОВЫЕ ТИПЫ
+' =====================================================
+class Form <<Framework>>
+class UserControl <<Framework>>
+class Guna2Panel <<Framework>>
+
+interface IRefreshableTab
+interface IResizableContainer
+
+' =====================================================
+' ГОЛОВНИЙ ШАР (Оркестрація)
+' =====================================================
+class MainForm
+
+struct tabState <<struct>> {
+    + page : UserControl
+}
+
+' Показуємо, що tabState є внутрішньою структурою MainForm, 
+' яка безпосередньо посилається на базовий UserControl
+MainForm +-- tabState
+tabState "1" o-- "1" UserControl
+
+' =====================================================
+' КОНТРОЛИ ВКЛАДОК
+' =====================================================
+package "Tabs" {
+    class CookBooksControl
+    class GlobalControl
+    class MyRecipesControl
+    class InstrumentsControl
+    class ProfileControl
+    class EditControl
+}
+
+' =====================================================
+' ДОПОМІЖНІ КОМПОНЕНТИ
+' =====================================================
+package "Dynamic Controls" {
+    class RecipeCardControl
+    class StepViewControl
+    class ResizablePanel
+}
+
+' =====================================================
+' НАСЛІДУВАННЯ ТА РЕАЛІЗАЦІЯ
+' =====================================================
+Form <|-- MainForm
+Guna2Panel <|-- ResizablePanel
+
+' Усі контроли є спадкоємцями базового UserControl
+UserControl <|-- CookBooksControl
+UserControl <|-- GlobalControl
+UserControl <|-- MyRecipesControl
+UserControl <|-- InstrumentsControl
+UserControl <|-- ProfileControl
+UserControl <|-- EditControl
+
+' Інтерфейси
+IRefreshableTab <|.. CookBooksControl
+IRefreshableTab <|.. GlobalControl
+IRefreshableTab <|.. MyRecipesControl
+IRefreshableTab <|.. InstrumentsControl
+IRefreshableTab <|.. ProfileControl
+
+IResizableContainer <|.. CookBooksControl
+IResizableContainer <|.. GlobalControl
+IResizableContainer <|.. MyRecipesControl
+IResizableContainer <|.. EditControl
+
+ResizablePanel --> IResizableContainer
+
+' =====================================================
+' ГОЛОВНІ ЗАЛЕЖНОСТІ
+' =====================================================
+CookBooksControl ..> MainForm
+MyRecipesControl ..> MainForm
+
+GlobalControl ..> RecipeCardControl
+GlobalControl ..> StepViewControl
+
+MyRecipesControl ..> RecipeCardControl
+MyRecipesControl ..> StepViewControl
+
+@enduml

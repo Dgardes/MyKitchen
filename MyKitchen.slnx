@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="MyKitchen_UI/MyKitchen_UI.csproj" />
+  <Project Path="MyKitchen_Core/MyKitchen_Core.csproj" />
+</Solution>
